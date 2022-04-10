@@ -6,5 +6,7 @@ using System.Threading.Tasks;
 
 namespace RmWorkPlanningApp {
     public class Worker {
+        public int _id { get; set; }
+        public string _name { get; set; }
     }
 }
