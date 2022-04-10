@@ -4,6 +4,7 @@ using System.Linq;
 namespace RmWorkPlanningApp {
     public interface IWorkPlanRepository {
         public List<Worker> GetWorkerList();
+        public Worker CreateWorkerNamed(string workerName);
         public Worker GetWorkerById(int workerId);
         public Worker GetWorkerByName(string workerName);
     }
@@ -17,12 +18,22 @@ namespace RmWorkPlanningApp {
             return _workers;
         }
 
+        public Worker CreateWorkerNamed(string workerName) {
+            Worker newWorker = new Worker(workerName);
+            _workers.Add(newWorker);
+
+            return newWorker;
+        }
+
         public Worker GetWorkerById(int workerId) {
             return _workers.Where(worker => worker._id == workerId).First();
         }
 
         public Worker GetWorkerByName(string workerName) {
-            return _workers.Where(worker => worker._name == workerName).First();
+            List<Worker> workers = _workers.Where(worker => worker._name == workerName).ToList();
+            if (workers.Count == 0) return null;
+
+            return workers.First();
         }
     }
 }

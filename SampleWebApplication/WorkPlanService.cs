@@ -3,6 +3,7 @@
 namespace RmWorkPlanningApp {
     public interface IWorkPlanService {
         public List<Worker> GetWorkerList();
+        public Worker CreateWorkerNamed(string workerName);
         public Worker GetWorkerById(int workerId);
         public Worker GetWorkerByName(string workerName);
     }
@@ -20,6 +21,17 @@ namespace RmWorkPlanningApp {
 
         public List<Worker> GetWorkerList() {
             return GetRepo().GetWorkerList();
+        }
+
+        public Worker CreateWorkerNamed(string workerName) {
+            if (HasWorkerNamed(workerName)) return null; //No err-msg etc for now. @TODO
+
+            return GetRepo().CreateWorkerNamed(workerName);
+        }
+
+        private bool HasWorkerNamed(string workerName) {
+            Worker w = GetRepo().GetWorkerByName(workerName);
+            return (w != null);
         }
 
         public Worker GetWorkerById(int workerId) {
