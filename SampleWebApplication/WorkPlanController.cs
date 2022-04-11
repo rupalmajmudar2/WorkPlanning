@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using RmWorkPlanningApp;
 
 namespace RmWorkPlanning {
-    public class WorkPlanController {
+    public class WorkPlanController : ControllerBase {
         private IWorkPlanService _workPlanService;
         public WorkPlanController(WorkPlanService workPlanService) {
             _workPlanService = workPlanService;
@@ -16,23 +16,44 @@ namespace RmWorkPlanning {
             return _workPlanService;
         }
 
-        public List<Worker> GetWorkerList() {
-            return GetService().GetWorkerList();
+        [HttpGet]
+        public ActionResult<List<Worker>> GetWorkerList() {
+            return Ok(GetService().GetWorkerList());
         }
 
         public ActionResult<Worker> CreateWorkerNamed(string workerName) {
             Worker newWorker = GetService().CreateWorkerNamed(workerName);
             if (newWorker == null) return new BadRequestResult();
 
-            return newWorker;
+            return Created("workplanurl", newWorker);
         }
 
-        public Worker GetWorkerById(int workerId) {
-            return GetService().GetWorkerById(workerId);
+        public ActionResult<Worker> GetWorkerById(int workerId) {
+            Worker worker = GetService().GetWorkerById(workerId);
+            return Ok(worker);
         }
 
-        public Worker GetWorkerByName(string workerName) {
-            return GetService().GetWorkerByName(workerName);
+        public ActionResult<Worker> GetWorkerByName(string workerName) {
+            Worker worker = GetService().GetWorkerByName(workerName);
+            return Ok(worker);
+        }
+
+        //===================================================
+
+        public ActionResult<IShift> AddShiftForWorker(int shiftNr, int workerId) {
+            ServiceReturnObject<IShift> shiftSro = GetService().AddShiftForWorker(shiftNr, workerId);
+            if (shiftSro._returnValue == null) return new BadRequestResult();
+
+            IShift addedShift = shiftSro._returnValue;
+            return new ObjectResult(addedShift);
+        }
+
+        public ActionResult<IShift> RemoveShiftForWorker(int shiftNr, int workerId) {
+            ServiceReturnObject<IShift> shiftSro = GetService().RemoveShiftForWorker(shiftNr, workerId);
+            if (shiftSro._returnValue == null) return new BadRequestResult();
+
+            IShift removedShift = shiftSro._returnValue;
+            return new ObjectResult(removedShift);
         }
     }
 }

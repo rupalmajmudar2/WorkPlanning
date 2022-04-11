@@ -7,6 +7,8 @@ namespace RmWorkPlanningApp {
         public Worker CreateWorkerNamed(string workerName);
         public Worker GetWorkerById(int workerId);
         public Worker GetWorkerByName(string workerName);
+        public ServiceReturnObject<IShift> AddShiftForWorker(IShift shift, Worker Worker);
+        public ServiceReturnObject<IShift> RemoveShiftForWorker(IShift shift, Worker Worker);
     }
     public class WorkPlanRepository : IWorkPlanRepository {
         public List<Worker> _workers;
@@ -34,6 +36,13 @@ namespace RmWorkPlanningApp {
             if (workers.Count == 0) return null;
 
             return workers.First();
+        }
+
+        public ServiceReturnObject<IShift> AddShiftForWorker(IShift shift, Worker Worker) {
+            return Worker.AddShift(shift);
+        }
+        public ServiceReturnObject<IShift> RemoveShiftForWorker(IShift shift, Worker Worker) {
+            return Worker.RemoveShift(shift);
         }
     }
 }
