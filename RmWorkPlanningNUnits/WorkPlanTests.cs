@@ -37,6 +37,8 @@ namespace RmWorkPlanningNUnits {
             Worker alice3 = _workPlanController.GetWorkerById(aliceId);
             Assert.IsNotNull(alice3);
             Assert.AreEqual("Alice", alice3._name);
+
+            Assert.AreEqual(1, workers.Count);
         }
 
         [TearDown]
