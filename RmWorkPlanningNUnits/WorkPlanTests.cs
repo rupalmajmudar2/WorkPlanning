@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ namespace RmWorkPlanningNUnits {
 
         [Test]
         [TestCase]
-        public void TestStart() {
+        public void TestWorkPlaning() {
             List<Worker> workers = GetObjectResultContent(_workPlanController.GetWorkerList());
             Assert.AreEqual(0, workers.Count);
 
@@ -50,6 +51,8 @@ namespace RmWorkPlanningNUnits {
             Assert.IsNotNull(addedShift);
             Assert.IsInstanceOf(typeof(SecondShift), addedShift);
             Assert.AreEqual(aliceShiftNr, addedShift.GetShiftNumber());
+            Assert.AreEqual(8, addedShift.GetStartTime());
+            Assert.AreEqual(16, addedShift.GetEndTime());
 
             //(2.2) Try to set another shift for this same worker : Failure
             actionResult = _workPlanController.AddShiftForWorker(3, aliceId);
@@ -71,6 +74,13 @@ namespace RmWorkPlanningNUnits {
             actionResult = _workPlanController.RemoveShiftForWorker(6, aliceId);
             Assert.IsNotNull(actionResult);
             AssertIsBadRequest(actionResult.Result);
+
+            //(4) Print the Shift-Report
+            ActionResult<List<string>> reportResult = _workPlanController.GetAllWorkersShiftsReport();
+            List<string> report = reportResult.Value;
+            Assert.IsNotEmpty(report);
+            Assert.IsTrue(report.ElementAt(0).Contains("Alice Has Shift #2 From:8 To:16 Hrs."));
+            Assert.IsTrue(report.ElementAt(1).Contains("Bob Has No Shift today."));
 
             //(3.2) Remove the valid shift for Alice
             actionResult = _workPlanController.RemoveShiftForWorker(aliceShiftNr, aliceId);

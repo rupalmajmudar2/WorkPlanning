@@ -12,6 +12,10 @@ namespace RmWorkPlanningApp {
             _name = workerName;
             _shifts = new List<IShift>();
         }
+        public IShift GetShift() {
+            if (!HasAShift()) return new NullShift();
+            return _shifts.ElementAt(0);
+        }
 
         /*
          * Business Rule: Only one shift (of 8hrs) for a Worker
@@ -37,8 +41,9 @@ namespace RmWorkPlanningApp {
         }
 
         public bool HasShift(IShift shift) {
-            if (!HasAShift()) return false; //zero shifts
-            return (_shifts.ElementAt(0).GetShiftNumber().Equals(shift.GetShiftNumber()));
+            IShift myShift = GetShift();
+            if (myShift == null) return false; //zero shifts
+            return (myShift.GetShiftNumber().Equals(shift.GetShiftNumber()));
         }
     }
 }

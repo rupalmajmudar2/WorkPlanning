@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace RmWorkPlanningApp {
     public interface IWorkPlanService {
@@ -8,8 +9,9 @@ namespace RmWorkPlanningApp {
         public Worker GetWorkerByName(string workerName);
         public ServiceReturnObject<IShift> AddShiftForWorker(int shiftNr, int workerId);
         public ServiceReturnObject<IShift> RemoveShiftForWorker(int shiftNr, int workerId);
+        public List<Worker> GetWorkersOnShift(int shiftNr);
+        public List<string> GetAllWorkersShiftsReport();
     }
-
     public class WorkPlanService : IWorkPlanService {
         private IWorkPlanRepository _workPlanRepo;
 
@@ -55,6 +57,17 @@ namespace RmWorkPlanningApp {
             IShift shift = Shift.GetShiftFor(shiftNr);
             Worker worker = GetWorkerById(workerId);
             return GetRepo().RemoveShiftForWorker(shift, worker);
+        }
+
+        //========================================
+
+        public List<Worker> GetWorkersOnShift(int shiftNr) {
+            IShift shift = Shift.GetShiftFor(shiftNr);
+            return GetRepo().GetWorkersOnShift(shift);
+        }
+
+        public List<string> GetAllWorkersShiftsReport() {
+            return new WorkerReport().GetWorkersShiftsReportFor(GetWorkerList());
         }
     }
 }

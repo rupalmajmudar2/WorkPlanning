@@ -9,6 +9,8 @@ namespace RmWorkPlanningApp {
         public Worker GetWorkerByName(string workerName);
         public ServiceReturnObject<IShift> AddShiftForWorker(IShift shift, Worker Worker);
         public ServiceReturnObject<IShift> RemoveShiftForWorker(IShift shift, Worker Worker);
+        public List<Worker> GetWorkersOnShift(IShift shift);
+        //public List<Worker, IShift> GetAllWorkersShifts()
     }
     public class WorkPlanRepository : IWorkPlanRepository {
         public List<Worker> _workers;
@@ -43,6 +45,10 @@ namespace RmWorkPlanningApp {
         }
         public ServiceReturnObject<IShift> RemoveShiftForWorker(IShift shift, Worker Worker) {
             return Worker.RemoveShift(shift);
+        }
+
+        public List<Worker> GetWorkersOnShift(IShift shift) {
+            return _workers.Where(worker => worker._shifts.Contains(shift)).ToList();
         }
     }
 }

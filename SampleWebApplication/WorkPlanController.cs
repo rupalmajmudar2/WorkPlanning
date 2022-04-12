@@ -16,6 +16,10 @@ namespace RmWorkPlanning {
             return _workPlanService;
         }
 
+        //===================================================
+        // Workers
+        //===================================================
+
         [HttpGet]
         public ActionResult<List<Worker>> GetWorkerList() {
             return Ok(GetService().GetWorkerList());
@@ -39,6 +43,8 @@ namespace RmWorkPlanning {
         }
 
         //===================================================
+        // Shifts
+        //===================================================
 
         public ActionResult<IShift> AddShiftForWorker(int shiftNr, int workerId) {
             ServiceReturnObject<IShift> shiftSro = GetService().AddShiftForWorker(shiftNr, workerId);
@@ -54,6 +60,16 @@ namespace RmWorkPlanning {
 
             IShift removedShift = shiftSro._returnValue;
             return new ObjectResult(removedShift);
+        }
+
+        //===================================================
+        // Reports
+        //===================================================
+        public ActionResult<List<Worker>> GetWorkersOnShift(int shiftNr) {
+            return GetService().GetWorkersOnShift(shiftNr);
+        }
+        public ActionResult<List<string>> GetAllWorkersShiftsReport() {
+            return GetService().GetAllWorkersShiftsReport();
         }
     }
 }
