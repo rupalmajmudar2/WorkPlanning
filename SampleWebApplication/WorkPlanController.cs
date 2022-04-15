@@ -8,7 +8,7 @@ using RmWorkPlanningApp;
 namespace RmWorkPlanning {
     public class WorkPlanController : ControllerBase {
         private IWorkPlanService _workPlanService;
-        public WorkPlanController(WorkPlanService workPlanService) {
+        public WorkPlanController(IWorkPlanService workPlanService) {
             _workPlanService = workPlanService;
         }
 

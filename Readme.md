@@ -8,3 +8,5 @@ Project thoughts n tasks are in https://github.com/users/rupalmajmudar2/projects
 (i) git clone https://github.com/rupalmajmudar2/WorkPlanning.git
 (ii) git checkout master
 (iii) dotnet test --filter "FullyQualifiedName=RmWorkPlanningNUnits.WorkPlanTests"
+(iv) Tests from Postman:
+	https://localhost:5001/WorkPlan/GetWorkerList
