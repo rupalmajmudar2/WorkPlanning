@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using RmWorkPlanningApp;
 
 namespace RmWorkPlanning {
+    [Route("[controller]")]
     public class WorkPlanController : ControllerBase {
         private IWorkPlanService _workPlanService;
         public WorkPlanController(IWorkPlanService workPlanService) {
@@ -20,16 +21,17 @@ namespace RmWorkPlanning {
         // Workers
         //===================================================
 
-        [HttpGet]
+        [HttpGet("workers")]
         public ActionResult<List<Worker>> GetWorkerList() {
             return Ok(GetService().GetWorkerList());
         }
 
+        [HttpPost("createWorker/{workerName}")]
         public ActionResult<Worker> CreateWorkerNamed(string workerName) {
             Worker newWorker = GetService().CreateWorkerNamed(workerName);
             if (newWorker == null) return new BadRequestResult();
 
-            return Created("workplanurl", newWorker);
+            return Created("newWorkerUrl", newWorker);
         }
 
         public ActionResult<Worker> GetWorkerById(int workerId) {
@@ -46,12 +48,13 @@ namespace RmWorkPlanning {
         // Shifts
         //===================================================
 
+        [HttpPost("addShift/{shiftNr}/{workerId}")]
         public ActionResult<IShift> AddShiftForWorker(int shiftNr, int workerId) {
             ServiceReturnObject<IShift> shiftSro = GetService().AddShiftForWorker(shiftNr, workerId);
             if (shiftSro._returnValue == null) return new BadRequestResult();
 
             IShift addedShift = shiftSro._returnValue;
-            return new ObjectResult(addedShift);
+            return Created("newShiftUrl", addedShift);
         }
 
         public ActionResult<IShift> RemoveShiftForWorker(int shiftNr, int workerId) {
@@ -59,7 +62,7 @@ namespace RmWorkPlanning {
             if (shiftSro._returnValue == null) return new BadRequestResult();
 
             IShift removedShift = shiftSro._returnValue;
-            return new ObjectResult(removedShift);
+            return Ok(removedShift);
         }
 
         //===================================================

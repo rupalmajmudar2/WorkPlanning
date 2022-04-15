@@ -79,7 +79,7 @@ namespace RmWorkPlanningNUnits {
             ActionResult<List<string>> reportResult = _workPlanController.GetAllWorkersShiftsReport();
             List<string> report = reportResult.Value;
             Assert.IsNotEmpty(report);
-            Assert.IsTrue(report.ElementAt(0).Contains("Alice Has Shift #2 From:8 To:16 Hrs."));
+            Assert.IsTrue(report.ElementAt(0).Contains("Alice Has Shift#2 From:8 To:16 Hrs."));
             Assert.IsTrue(report.ElementAt(1).Contains("Bob Has No Shift today."));
 
             //(3.2) Remove the valid shift for Alice

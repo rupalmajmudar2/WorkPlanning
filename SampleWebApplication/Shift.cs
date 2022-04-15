@@ -40,7 +40,11 @@ namespace RmWorkPlanningApp {
             return this.GetShiftNumber() == anotherShift.GetShiftNumber();
         }
         public virtual string GetReportString() {
-            return " Has Shift #" + GetShiftNumber()
+            return " Has " + this.ToString();
+        }
+
+        public override string ToString() {
+            return "Shift#" + GetShiftNumber()
                     + " From:" + GetStartTime() + " To:" + GetEndTime() + " Hrs.";
         }
 

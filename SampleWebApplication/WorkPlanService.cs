@@ -28,6 +28,7 @@ namespace RmWorkPlanningApp {
         }
 
         public Worker CreateWorkerNamed(string workerName) {
+            if (string.IsNullOrWhiteSpace(workerName)) return null;
             if (HasWorkerNamed(workerName)) return null; //No err-msg etc for now. @TODO
 
             return GetRepo().CreateWorkerNamed(workerName);

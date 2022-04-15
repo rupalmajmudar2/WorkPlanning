@@ -25,7 +25,7 @@ namespace RmWorkPlanningApp {
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthorization();
 
            /* app.UseEndpoints(endpoints => {
@@ -44,8 +44,8 @@ namespace RmWorkPlanningApp {
             services.AddMvc();
             services.AddLogging();
             services.AddSingleton<IConfigurationRoot>(Configuration);
-            services.AddScoped<IWorkPlanRepository, WorkPlanRepository>();
-            services.AddScoped<IWorkPlanService, WorkPlanService>();
+            services.AddSingleton<IWorkPlanRepository, WorkPlanRepository>();
+            services.AddSingleton<IWorkPlanService, WorkPlanService>();
         }
     }
 }
